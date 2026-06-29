@@ -1,0 +1,339 @@
+DOCUMENTAÇÃO TÉCNICA SIMPLES - WORKERS APP
+==========================================
+
+1. O QUE É ESTE PROJETO
+-----------------------
+O Workers é um aplicativo mobile feito com Expo + React Native + TypeScript.
+O objetivo é mostrar trilhas de desenvolvimento para jovens aprendizes, com:
+
+- escolha de trilha;
+- roadmap de etapas;
+- materiais recomendados;
+- marcação de progresso;
+- registro de comprovantes/certificados;
+- perfil do aprendiz;
+- estrutura preparada para Firebase.
+
+Nesta versão, o login, o cadastro, o progresso e os comprovantes funcionam localmente,
+apenas para teste. A estrutura já foi pensada para depois trocar esses dados locais pelo Firebase.
+
+
+2. COMO RODAR NO WINDOWS
+------------------------
+Abra o terminal dentro da pasta do projeto e rode:
+
+npm install
+npx.cmd expo start --tunnel
+
+Use o QR Code no Expo Go.
+
+O modo --tunnel ajuda outras pessoas a testarem pelo celular mesmo em redes diferentes,
+desde que seu notebook continue ligado e o terminal do Expo continue rodando.
+
+
+3. ESTRUTURA DE PASTAS
+----------------------
+
+assets/
+  images/
+    workers/
+      logo-full.png        -> Logo completa do Workers.
+      logo-mark.png        -> Marca simples W/seta.
+
+    tracks/
+      administrativo.png   -> Ícone da trilha Administrativo.
+      rh.png               -> Ícone da trilha RH.
+      logistica.png        -> Ícone da trilha Logística.
+      facilities.png       -> Ícone da trilha Facilities.
+      ti.png               -> Ícone da trilha TI/Suporte.
+
+src/
+  app/
+    _layout.tsx            -> Arquivo raiz do app. Envolve tudo no ProgressProvider.
+    index.tsx              -> Tela de login do aprendiz.
+    register.tsx           -> Tela de cadastro do aprendiz.
+    home.tsx               -> Tela inicial do aprendiz.
+    select-track.tsx       -> Tela de escolha de trilha.
+    certificates.tsx       -> Tela de comprovantes/certificados.
+    profile.tsx            -> Perfil do aprendiz.
+
+    track/[id].tsx         -> Tela do roadmap completo de uma trilha.
+    module/[id].tsx        -> Tela de detalhe de uma etapa da trilha.
+
+    company/
+      login.tsx            -> Login visual do portal da empresa.
+      dashboard.tsx        -> Demonstração do painel da empresa.
+
+  components/
+    workers/
+      AppButton.tsx        -> Botão padrão do app.
+      BottomNav.tsx        -> Navegação inferior fixa.
+      BrandHeader.tsx      -> Cabeçalho com marca Workers.
+      ModuleCard.tsx       -> Card de etapa do roadmap.
+      ProgressBar.tsx      -> Barra de progresso.
+      Screen.tsx           -> Estrutura padrão de tela com ScrollView + BottomNav.
+      TrackCard.tsx        -> Card de seleção de trilha.
+
+  context/
+    progress-context.tsx   -> Estado central do app nesta versão.
+                              Guarda usuário local, trilha escolhida, progresso e comprovantes.
+
+  data/
+    tracks.ts              -> Conteúdo das trilhas, etapas, checklists e materiais.
+                              Este é o principal arquivo para editar o conteúdo do roadmap.
+
+  services/
+    authService.ts         -> Serviço preparado para autenticação.
+                              Hoje é local; depois será Firebase Auth.
+
+    progressService.ts     -> Serviço preparado para salvar progresso.
+                              Depois será Firestore.
+
+    certificateService.ts  -> Serviço preparado para salvar certificados.
+                              Depois será Firebase Storage + Firestore.
+
+    firebase/
+      firebaseConfig.example.ts -> Modelo do arquivo de configuração do Firebase.
+      README.md                 -> Passos planejados para conectar Firebase.
+
+  theme/
+    colors.ts              -> Paleta de cores, espaçamentos e raios de borda.
+
+  types/
+    learning.ts            -> Tipos TypeScript do projeto: Track, LearningModule,
+                              UserProfile, CertificateEvidence etc.
+
+
+4. O QUE É .TS, .TSX, JAVASCRIPT E TYPESCRIPT
+---------------------------------------------
+
+JavaScript (.js)
+É a linguagem base usada para criar lógica em sites e aplicativos.
+
+TypeScript (.ts)
+É JavaScript com tipos. Ele ajuda o VS Code a avisar quando algo está errado.
+Exemplo: se uma função espera texto e você manda número, o TypeScript pode alertar antes do app quebrar.
+
+TSX (.tsx)
+É TypeScript com JSX, ou seja, TypeScript que também contém componentes visuais React.
+As telas do app usam .tsx porque misturam lógica e interface.
+
+Exemplo simplificado:
+
+export default function Tela() {
+  return (
+    <View>
+      <Text>Olá</Text>
+    </View>
+  );
+}
+
+Nesse exemplo:
+- function Tela() é a lógica/componente;
+- View é como uma div/container;
+- Text é texto na tela;
+- return (...) é o que será exibido.
+
+
+5. O QUE É REACT NATIVE
+-----------------------
+React Native permite criar app mobile usando componentes React.
+Em vez de HTML, usamos componentes próprios:
+
+- View      -> caixa/container;
+- Text      -> texto;
+- Image     -> imagem;
+- Pressable -> área clicável;
+- ScrollView -> tela com rolagem;
+- TextInput -> campo de digitação.
+
+
+6. O QUE É EXPO
+---------------
+Expo é uma camada que facilita criar e testar apps React Native.
+Com Expo Go, você escaneia um QR Code e roda o app no celular sem gerar APK toda hora.
+
+Para testar com outras pessoas, use:
+
+npx.cmd expo start --tunnel
+
+
+7. O QUE É EXPO ROUTER
+----------------------
+Expo Router cria navegação usando arquivos.
+Cada arquivo dentro de src/app vira uma rota/tela.
+
+Exemplos:
+
+src/app/index.tsx          -> rota /
+src/app/home.tsx           -> rota /home
+src/app/select-track.tsx   -> rota /select-track
+src/app/track/[id].tsx     -> rota dinâmica, exemplo /track/facilities
+src/app/module/[id].tsx    -> rota dinâmica, exemplo /module/fac-excel-controles
+
+Quando aparece [id], significa que a tela recebe um parâmetro variável.
+
+
+8. ONDE EDITAR O CONTEÚDO DAS TRILHAS
+-------------------------------------
+O conteúdo fica em:
+
+src/data/tracks.ts
+
+Lá existem objetos com:
+
+- title: nome da trilha ou etapa;
+- targetRole: cargo-alvo;
+- description: descrição curta;
+- modules: lista de etapas;
+- learnChecklist: o que o aprendiz precisa aprender;
+- practice: atividade prática sugerida;
+- evidencePrompt: que comprovante anexar;
+- materials: links de cursos/materiais.
+
+Se quiser alterar uma etapa, comece por esse arquivo.
+
+
+9. COMO FUNCIONA O PROGRESSO AGORA
+----------------------------------
+O progresso fica em memória dentro de:
+
+src/context/progress-context.tsx
+
+Quando o usuário toca em "Concluir etapa", o app guarda o ID daquela etapa como concluído.
+A porcentagem é calculada assim:
+
+etapas concluídas / total de etapas da trilha * 100
+
+Isso ainda não salva na nuvem. Se recarregar o app, pode perder o estado.
+Com Firebase, vamos salvar no Firestore.
+
+
+10. COMO FUNCIONA O COMPROVANTE AGORA
+-------------------------------------
+Na tela da etapa, o botão "Adicionar comprovante" cria um comprovante simulado.
+Ele ainda não abre arquivos reais.
+
+Por que fizemos assim?
+Porque para upload real vamos precisar de:
+
+- expo-document-picker;
+- Firebase Storage;
+- Firestore para salvar metadados.
+
+A estrutura já está pensada para isso.
+
+
+11. COMO SERÁ O FIREBASE DEPOIS
+-------------------------------
+A ideia é usar:
+
+Firebase Authentication
+- cadastro e login com e-mail/senha.
+
+Cloud Firestore
+- dados do usuário;
+- trilha escolhida;
+- progresso;
+- vínculo com empresa;
+- metadados dos comprovantes.
+
+Firebase Storage
+- arquivos PDF/imagem dos certificados e evidências.
+
+Estrutura sugerida:
+
+users/{userId}
+  name
+  email
+  role: apprentice | company
+  companyId
+  selectedTrackId
+
+companies/{companyId}
+  name
+
+progress/{progressId}
+  userId
+  trackId
+  moduleId
+  completed
+  updatedAt
+
+certificates/{certificateId}
+  userId
+  trackId
+  moduleId
+  fileName
+  fileUrl
+  createdAt
+
+
+12. DIFERENÇA ENTRE APP DO APRENDIZ E PORTAL DA EMPRESA
+--------------------------------------------------------
+O app mobile é do aprendiz.
+A navegação inferior tem:
+
+- Início;
+- Trilhas;
+- Comprovantes;
+- Perfil.
+
+A empresa não aparece na dock do aprendiz.
+O portal da empresa está separado em:
+
+src/app/company/login.tsx
+src/app/company/dashboard.tsx
+
+No futuro, ele pode virar uma versão web publicada separadamente.
+
+
+13. ARQUIVOS MAIS IMPORTANTES PARA VOCÊ EDITAR
+----------------------------------------------
+Para conteúdo:
+- src/data/tracks.ts
+
+Para cores:
+- src/theme/colors.ts
+
+Para tela de login:
+- src/app/index.tsx
+
+Para cadastro:
+- src/app/register.tsx
+
+Para home:
+- src/app/home.tsx
+
+Para seleção de trilha:
+- src/app/select-track.tsx
+
+Para detalhe de etapa:
+- src/app/module/[id].tsx
+
+Para navegação inferior:
+- src/components/workers/BottomNav.tsx
+
+
+14. CUIDADO AO EDITAR
+---------------------
+Sempre que editar, salve o arquivo e veja o Expo atualizar.
+Se der erro vermelho, leia o nome do arquivo e a linha indicada.
+
+Erros comuns:
+- esquecer vírgula em objeto;
+- apagar parêntese ou chave;
+- escrever string com aspas abertas;
+- mudar nome de arquivo sem ajustar import;
+- remover campo obrigatório de uma etapa em tracks.ts.
+
+Antes de mexer muito, faça commit no Git:
+
+git add -A
+git commit -m "checkpoint: antes de nova alteração"
+
+Assim você consegue voltar se quebrar algo.
+
+
+OBSERVAÇÃO DE CONTEÚDO
+O app não exibe tempo sugerido nas trilhas ou etapas. A proposta é orientar o que aprender, praticar e comprovar, sem pressionar o aprendiz com uma carga horária estimada.

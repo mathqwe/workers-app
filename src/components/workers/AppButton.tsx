@@ -5,27 +5,33 @@ import { colors, radius, spacing } from '@/theme/colors';
 type AppButtonProps = {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'success';
   style?: ViewStyle;
+  disabled?: boolean;
 };
 
-export function AppButton({ title, onPress, variant = 'primary', style }: AppButtonProps) {
+export function AppButton({ title, onPress, variant = 'primary', style, disabled }: AppButtonProps) {
   return (
     <Pressable
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         styles.base,
         variant === 'primary' && styles.primary,
         variant === 'secondary' && styles.secondary,
         variant === 'outline' && styles.outline,
-        pressed && styles.pressed,
+        variant === 'ghost' && styles.ghost,
+        variant === 'success' && styles.success,
+        pressed && !disabled && styles.pressed,
+        disabled && styles.disabled,
         style,
       ]}>
       <Text
         style={[
           styles.text,
-          variant === 'secondary' && styles.secondaryText,
           variant === 'outline' && styles.outlineText,
+          variant === 'ghost' && styles.ghostText,
+          disabled && styles.disabledText,
         ]}>
         {title}
       </Text>
@@ -35,36 +41,48 @@ export function AppButton({ title, onPress, variant = 'primary', style }: AppBut
 
 const styles = StyleSheet.create({
   base: {
-    minHeight: 50,
+    minHeight: 52,
     borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
   },
   primary: {
-    backgroundColor: colors.cyan500,
+    backgroundColor: colors.navy900,
   },
   secondary: {
-    backgroundColor: colors.navy800,
+    backgroundColor: colors.cyan600,
   },
   outline: {
-    backgroundColor: 'transparent',
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.borderStrong,
+  },
+  ghost: {
+    backgroundColor: 'transparent',
+  },
+  success: {
+    backgroundColor: colors.success,
   },
   pressed: {
-    opacity: 0.8,
+    opacity: 0.82,
     transform: [{ scale: 0.99 }],
+  },
+  disabled: {
+    backgroundColor: colors.border,
   },
   text: {
     color: colors.white,
     fontSize: 16,
-    fontWeight: '700',
-  },
-  secondaryText: {
-    color: colors.white,
+    fontWeight: '800',
   },
   outlineText: {
-    color: colors.text,
+    color: colors.navy900,
+  },
+  ghostText: {
+    color: colors.cyan600,
+  },
+  disabledText: {
+    color: colors.textMuted,
   },
 });

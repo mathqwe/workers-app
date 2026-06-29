@@ -1,0 +1,13 @@
+/*
+  Copie este arquivo para firebaseConfig.ts quando criar o projeto no Firebase.
+  Não coloque dados reais aqui se o repositório for público sem revisar as regras de segurança.
+*/
+
+export const firebaseConfig = {
+  apiKey: 'SUA_API_KEY',
+  authDomain: 'SEU_PROJETO.firebaseapp.com',
+  projectId: 'SEU_PROJETO',
+  storageBucket: 'SEU_PROJETO.appspot.com',
+  messagingSenderId: 'SEU_SENDER_ID',
+  appId: 'SEU_APP_ID',
+};

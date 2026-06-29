@@ -4,33 +4,30 @@ Protótipo mobile desenvolvido para projeto da Espro.
 
 ## Objetivo
 
-O Workers tem como objetivo auxiliar jovens aprendizes a identificarem quais competências precisam desenvolver para aumentar suas chances de efetivação.
+O Workers ajuda jovens aprendizes a entenderem o que precisam aprender, praticar e comprovar para aumentar suas chances de efetivação.
 
-O app organiza trilhas de desenvolvimento por área de atuação, apresentando módulos, materiais recomendados e acompanhamento de progresso.
+O app não é um curso completo. Ele funciona como um roadmap de desenvolvimento com trilhas por área, materiais recomendados, progresso e comprovantes.
 
-## MVP
+## MVP atual
 
-A primeira versão do projeto terá:
+- Login e cadastro local para teste
+- Escolha de trilha profissional
+- Roadmap por área
+- Etapas com checklist prático
+- Materiais gratuitos recomendados
+- Marcação de etapa concluída
+- Registro simulado de comprovante/certificado
+- Perfil do aprendiz
+- Estrutura preparada para Firebase
+- Portal da empresa separado da navegação do aprendiz
 
-- Tela de entrada/login demonstrativo
-- Escolha de trilha de carreira
-- Roadmap de competências
-- Materiais recomendados por módulo
-- Marcação de módulos concluídos
-- Cálculo de progresso do aprendiz
-- Tela demonstrativa para empresa/gestor
+## Trilhas disponíveis
 
-## Fora do MVP inicial
-
-Nesta primeira versão, não serão implementados:
-
-- IA gerando trilhas automaticamente
-- Chat
-- Fórum
-- Ranking
-- Dashboard completo da empresa
-- Backend obrigatório
-- Sistema real de certificados
+- Administrativo
+- Recursos Humanos
+- Logística
+- Facilities
+- TI / Suporte
 
 ## Tecnologias
 
@@ -38,21 +35,18 @@ Nesta primeira versão, não serão implementados:
 - Expo
 - TypeScript
 - Expo Router
-- Dados locais na primeira versão
-- Firebase em fase futura
+- Dados locais nesta versão
+- Firebase previsto para a próxima etapa
 
-## Fases do projeto
+## Rodar o projeto
 
-1. Engenharia de requisitos
-2. UI/UX Design
-3. Desenvolvimento do protótipo
-4. Testes e validação
-5. Apresentação final
+```bash
+npm install
+npx expo start --tunnel
+```
 
-## Identidade visual
+Para testar no Expo Go, escaneie o QR Code.
 
-A identidade visual do Workers utiliza azul escuro, branco e azul ciano como cores principais, transmitindo tecnologia, confiança e desenvolvimento profissional.
+## Próxima etapa
 
-## Status
-
-Projeto em fase inicial de desenvolvimento.
+Conectar Firebase Authentication, Cloud Firestore e Cloud Storage.

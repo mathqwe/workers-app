@@ -7,13 +7,14 @@ import { AppButton } from '@/components/workers/AppButton';
 import { useProgress } from '@/context/progress-context';
 import { colors, radius, spacing } from '@/theme/colors';
 
-export default function LoginScreen() {
-  const { login } = useProgress();
+export default function RegisterScreen() {
+  const { register } = useProgress();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleLogin() {
-    login({ email, password });
+  function handleRegister() {
+    register({ name, email, password });
     router.replace('/select-track' as never);
   }
 
@@ -22,23 +23,35 @@ export default function LoginScreen() {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.keyboardView}>
-        <View style={styles.logoArea}>
+        <View style={styles.topBar}>
+          <Pressable onPress={() => router.back()} style={styles.backButton}>
+            <Text style={styles.backText}>‹</Text>
+          </Pressable>
           <Image source={require('../../assets/images/workers/logo-full.png')} style={styles.logo} />
-          <Text style={styles.subtitle}>Seu caminho de aprendizado para a efetivação.</Text>
+          <View style={styles.backButtonPlaceholder} />
         </View>
 
+        <Text style={styles.title}>Criar conta</Text>
+        <Text style={styles.subtitle}>Informe seus dados para personalizar sua jornada no Workers.</Text>
+
         <View style={styles.card}>
-          <Text style={styles.title}>Entrar</Text>
-          <Text style={styles.description}>
-            Acesse sua trilha, veja os próximos passos e registre sua evolução.
-          </Text>
+          <View style={styles.fieldGroup}>
+            <Text style={styles.label}>Nome</Text>
+            <TextInput
+              value={name}
+              onChangeText={setName}
+              placeholder="Seu nome"
+              placeholderTextColor={colors.textMuted}
+              style={styles.input}
+            />
+          </View>
 
           <View style={styles.fieldGroup}>
             <Text style={styles.label}>E-mail</Text>
             <TextInput
               value={email}
               onChangeText={setEmail}
-              placeholder="Digite seu e-mail"
+              placeholder="seuemail@exemplo.com"
               placeholderTextColor={colors.textMuted}
               keyboardType="email-address"
               autoCapitalize="none"
@@ -51,24 +64,14 @@ export default function LoginScreen() {
             <TextInput
               value={password}
               onChangeText={setPassword}
-              placeholder="Digite sua senha"
+              placeholder="Crie uma senha"
               placeholderTextColor={colors.textMuted}
               secureTextEntry
               style={styles.input}
             />
           </View>
 
-          <AppButton title="Entrar" onPress={handleLogin} />
-
-          <View style={styles.linksRow}>
-            <Pressable onPress={() => router.push('/register' as never)}>
-              <Text style={styles.link}>Criar minha conta</Text>
-            </Pressable>
-            <Text style={styles.dot}>•</Text>
-            <Pressable onPress={() => router.push('/forgot-password' as never)}>
-              <Text style={styles.linkMuted}>Esqueci minha senha</Text>
-            </Pressable>
-          </View>
+          <AppButton title="Continuar" onPress={handleRegister} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -78,50 +81,63 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.navy950,
+    backgroundColor: colors.background,
   },
   keyboardView: {
     flex: 1,
-    justifyContent: 'center',
     padding: spacing.lg,
+    gap: spacing.lg,
   },
-  logoArea: {
+  topBar: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: spacing.xl,
+    justifyContent: 'space-between',
+  },
+  backButton: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backButtonPlaceholder: {
+    width: 46,
+    height: 46,
+  },
+  backText: {
+    color: colors.navy900,
+    fontSize: 34,
+    lineHeight: 34,
+    fontWeight: '800',
+    marginTop: -4,
   },
   logo: {
-    width: 214,
-    height: 58,
+    width: 126,
+    height: 34,
     resizeMode: 'contain',
   },
+  title: {
+    color: colors.text,
+    fontSize: 34,
+    lineHeight: 40,
+    fontWeight: '900',
+  },
   subtitle: {
-    color: '#D5EAF2',
-    fontSize: 15,
-    lineHeight: 22,
-    fontWeight: '700',
-    marginTop: spacing.md,
-    textAlign: 'center',
+    color: colors.textSecondary,
+    fontSize: 16,
+    lineHeight: 24,
+    marginTop: -spacing.sm,
   },
   card: {
     backgroundColor: colors.white,
     borderRadius: radius.xxl,
     padding: spacing.lg,
-    gap: spacing.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 18 },
-    shadowOpacity: 0.22,
-    shadowRadius: 24,
-    elevation: 8,
-  },
-  title: {
-    color: colors.text,
-    fontSize: 30,
-    fontWeight: '900',
-  },
-  description: {
-    color: colors.textSecondary,
-    fontSize: 15,
-    lineHeight: 23,
+    gap: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   fieldGroup: {
     gap: spacing.sm,
@@ -140,29 +156,5 @@ const styles = StyleSheet.create({
     color: colors.text,
     backgroundColor: colors.white,
     fontSize: 15,
-  },
-  linksRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  link: {
-    color: colors.cyan600,
-    textAlign: 'center',
-    fontSize: 13,
-    fontWeight: '900',
-  },
-  linkMuted: {
-    color: colors.textMuted,
-    textAlign: 'center',
-    fontSize: 13,
-    fontWeight: '800',
-  },
-  dot: {
-    color: colors.textMuted,
-    fontSize: 13,
-    fontWeight: '900',
   },
 });
